@@ -1,21 +1,25 @@
-LIB = libtoml.a
-LIB_SHARED = libtoml.so
+HFILES = toml.h
+CFILES = toml.c
+OBJ = $(CFILES:.c=.o) 
 EXEC = toml_json toml_cat
 INCLUDE_DIR = include
 
-CFILES = src/toml.c
 CFLAGS = -std=c99 -Wall -Wextra -fpic -I$(INCLUDE_DIR)
+LIB = libtoml.a
+LIB_SHARED = libtoml.so
 
-# To compile for debug:     make DEBUG=1
-# To compile for no debug:  make
-
+# to compile for debug: make DEBUG=1
+# to compile for no debug: make
 ifdef DEBUG
     CFLAGS += -O0 -g
 else
     CFLAGS += -O2 -DNDEBUG
 endif
 
+
 all: $(LIB) $(LIB_SHARED) $(EXEC)
+
+*.o: $(HFILES)
 
 libtoml.a: src/toml.o
 	ar -rcs $@ $^
